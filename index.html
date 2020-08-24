@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      <!--My CSS-->
+      <link rel="stylesheet" type="text/css" href="styles.css">
+    <title></title>
+  </head>
+  <body>
+    <div class='container'>
+    <div class='row text-center'>
+    <h1 class='col-xs text-center'>Etch-A-Sketch</h1>
+    </div>
+    <form class='col-xs-auto'><input type="number" placeholder = "Pixels per side. eg. 30"><button id="numPixels" class='btn btn-warning'>Enter</button></input></form>
+    </div>
+    <div id='gridHolder' class='container'></div>
+    <div id=formHolder class='container'>
+    <div id='buttons' class='row text-center'>
+       <div class='col-xs-auto text-center'> <button class='btn btn-primary ' id = 'reset' >Reset</button> </div>
+        <div class='col-xs-auto text-center btn btn-warning'><input id="color" type='color'> <- Click to Select Color</input></div>
+        
+    </div>
+    </div>
+
+  
+
+    <!-- JavaScript -->
+    <script>
+        
+        //build grid:
+        let num=50;
+        let currentColor = '#000000';
+        const gridHolder = document.querySelector('#gridHolder');
+        draw(num)
+    
+        //coloring function:
+        function color(e){
+            
+            e.target.style.backgroundColor = currentColor;
+        }
+        //clear the board to draw again:
+        function clear(){
+            gridHolder.innerHTML = '';
+        }
+        //draw function to make board:
+        function draw(num) {
+            for (let i = 0; i<num; i++){
+            let row = document.createElement("div");
+            row.classList.add("row");
+            for (let j = 0; j<num; j++) {
+              let col = document.createElement("div");
+              col.classList.add("col-xs");
+              col.classList.add("gridElement")
+              col.id = `row-${String(i)}-col-${String(j)}`;
+              col.textContent = ".";
+              col.style.color = "rgba(0,0,0,0)";
+              col.style.width = `${(1/num)*100}%`;
+              row.appendChild(col);
+            }
+            gridHolder.appendChild(row);
+        }
+        //add event listeners to grid:
+        pixels =Array.from(document.getElementsByClassName("gridElement"));
+        pixels.forEach( (pixel) => {
+            pixel.addEventListener('mouseover', (e) => color(e))
+        })
+        }
+        
+        
+       
+
+        //add edent listeners to inputs:
+        const colorChooser = document.getElementById('color')
+        
+        colorChooser.addEventListener('change', (event) => {
+            currentColor = event.target.value;
+        })
+
+        const reset = document.getElementById('reset');
+        reset.addEventListener('click', () => {
+            clear();
+            draw(num);
+        })
+    </script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
