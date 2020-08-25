@@ -16,13 +16,17 @@
     <div class='row text-center'>
     <h1 class='col-xs text-center'>Etch-A-Sketch</h1>
     </div>
-    <form class='col-xs-auto'><input type="number" placeholder = "Pixels per side. eg. 30"><button id="numPixels" class='btn btn-warning'>Enter</button></input></form>
+    <form class='col-xs-auto'>
+        <label for = "pixels">Number of pixels per side:</label>
+        <input name="pixels" id="pixels" type="number" placeholder = "eg. 30"><button id="numPixels" class='btn btn-warning'>Enter</button></input>
+    </form>
     </div>
-    <div id='gridHolder' class='container'></div>
+    <div id='gridHolder' class='gridHolder'></div>
     <div id=formHolder class='container'>
     <div id='buttons' class='row text-center'>
-       <div class='col-xs-auto text-center'> <button class='btn btn-primary ' id = 'reset' >Reset</button> </div>
-        <div class='col-xs-auto text-center btn btn-warning'><input id="color" type='color'> <- Click to Select Color</input></div>
+        <button class='col btn btn-primary text-center' id = 'reset' >Reset</button>
+        
+        <input id="color" type='color' class='col text-center btn btn-warning'> <- Click to Select Color</input>
         
     </div>
     </div>
@@ -36,7 +40,7 @@
         let num=50;
         let currentColor = '#000000';
         const gridHolder = document.querySelector('#gridHolder');
-        draw(num)
+        draw(num);
     
         //coloring function:
         function color(e){
@@ -49,20 +53,23 @@
         }
         //draw function to make board:
         function draw(num) {
-            for (let i = 0; i<num; i++){
-            let row = document.createElement("div");
-            row.classList.add("row");
-            for (let j = 0; j<num; j++) {
+            gridHolder.style.gridTemplateColumns = `repeat(${num}, 1fr )`;
+           gridHolder.style.gridTemplateRows = `repeat(${num}, 1fr )`;
+
+            for (let i = 0; i<num**2; i++){
+            
               let col = document.createElement("div");
               col.classList.add("col-xs");
               col.classList.add("gridElement")
-              col.id = `row-${String(i)}-col-${String(j)}`;
-              col.textContent = ".";
+              col.id = `element-${String(i)}`;
+              col.textContent = "..";
               col.style.color = "rgba(0,0,0,0)";
-              col.style.width = `${(1/num)*100}%`;
-              row.appendChild(col);
-            }
-            gridHolder.appendChild(row);
+              col.style.width = `${(1/num)*1000}px`;
+              col.style.height = `${(1/num)*1000}px`
+             // col.style.width = `${(1/num)*100}%`;
+             
+            
+            gridHolder.appendChild(col);
         }
         //add event listeners to grid:
         pixels =Array.from(document.getElementsByClassName("gridElement"));
@@ -85,6 +92,16 @@
         reset.addEventListener('click', () => {
             clear();
             draw(num);
+        })
+        const drawWithNewSize = document.getElementById('numPixels');
+        drawWithNewSize.addEventListener('click', () => {
+            clear();
+            draw(num);
+        })
+
+        const pixelChanger = document.getElementById('pixels');
+        pixelChanger.addEventListener('input', (e)=>{
+            num = e.target.value
         })
     </script>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
